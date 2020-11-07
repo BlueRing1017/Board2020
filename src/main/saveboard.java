@@ -1,12 +1,20 @@
 package main;
 
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class saveboard {
+	Calendar cal = Calendar.getInstance();
 	
 	private ArrayList<String> savetitle = new ArrayList<>();
 	private ArrayList<String> savetext = new ArrayList<>();
+	private ArrayList<String> savedate = new ArrayList<>();
+	private ArrayList<Integer> saveview = new ArrayList<>();
 	private Scanner sc = new Scanner(System.in);
 	private String title;
 	private String text;
@@ -27,31 +35,59 @@ public class saveboard {
 		text = sc.nextLine();
 		savetitle.add(title);
 		savetext.add(text);
+		String year = Integer.toString(cal.get ( YEAR ));
+		String month = Integer.toString(cal.get ( MONTH ) + 1 );
+		String date = Integer.toString(cal.get ( DATE )) ;
+		savedate.add(year + "." + month + "." + date);
+		saveview.add(0);
 		size++;
 		System.out.println("게시물이 등록되었습니다.");
+	}
+	
+	void testdata() {
+		String str;
+		for (int i = 1; i <= 3; i++) {
+			str = Integer.toString(i);
+			title = "제목" + str;
+			text = "내용" + str;
+			savetitle.add(title);
+			savetext.add(text);
+			String year = Integer.toString(cal.get ( YEAR ));
+			String month = Integer.toString(cal.get ( MONTH ) + 1 );
+			String date = Integer.toString(cal.get ( DATE )) ;
+			savedate.add(year + "." + month + "." + date);
+			saveview.add(0);
+			size++;
+		}
 	}
 	
 	public int getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
-	}
 
 	void list() {
 		line();
 		for (int i = 0; i < savetitle.size(); i++) {
+			int a = saveview.get(i);
 			System.out.println((i + 1) + " 번 게시물");
 			System.out.println(savetitle.get(i));
+			System.out.println("작성자 : 익명");
+			System.out.println("등록 날짜 : " + savedate.get(i));
+			System.out.println("조회수 : " + (a));
 			line();
 		}
 	}
 	
 	void viewprint(int num) {
-		line();
+		int a = saveview.get(num);
+		saveview.set(num, (a + 1));
+		System.out.println("=======" + (num + 1) + "번 게시물=======");
+		System.out.println("번호 : " + (num + 1));
 		System.out.println("제목 : " + savetitle.get(num));
-		System.out.println("");
+		System.out.println("작성자 : 익명");
+		System.out.println("등록 날짜 : " + savedate.get(num));
+		System.out.println("조회수 : " + (a + 1));
 		System.out.println(savetext.get(num));
 		line();
 	}
@@ -67,7 +103,7 @@ public class saveboard {
 			if (viewnum > size - 1) {
 				System.out.println("너무 큰 숫자입니다. ( 현재 " + size + "개의 게시물 존재 )");
 			}else {				
-				System.out.println(viewstr + "번의 게시물을 열람합니다.");
+//				System.out.println(viewstr + "번의 게시물을 열람합니다.");
 				viewprint(viewnum);
 			}
 		}
@@ -119,8 +155,23 @@ public class saveboard {
 		}		
 	}
 	
+	void search(String str) {
+		line();
+		for (int i = 0; i < savetitle.size(); i++) {
+			if (savetitle.get(i).contains(str)) {
+				int a = saveview.get(i);
+				System.out.println((i + 1) + " 번 게시물");
+				System.out.println(savetitle.get(i));
+				System.out.println("작성자 : 익명");
+				System.out.println("등록 날짜 : " + savedate.get(i));
+				System.out.println("조회수 : " + (a));
+				line();
+			}
+		}
+	}
+	
 	void line() {
-		System.out.println("====================");
+		System.out.println("=====================");
 	}
 
 }
