@@ -31,6 +31,9 @@ public class Main {
 			}else if (cmd.equals("delete")) {
 				sv.delete();
 			}else if (cmd.equals("search")) {
+				System.out.print("검색 항목을 선택해주세요 (1. 제목, 2. 내용, 3. 제목 + 내용, 4. 작성자) : ");
+				sv.setSkey(Integer.parseInt(sc.nextLine()));
+				System.out.println(sv.getSkey() + "번을 선택하셨습니다.");
 				System.out.print("검색 키워드를 입력해주세요 : ");
 				sv.search(sc.nextLine());
 			}else {
