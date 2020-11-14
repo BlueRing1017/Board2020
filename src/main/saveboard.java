@@ -34,14 +34,14 @@ public class saveboard {
 	private int dkey;
 	private String cmt;
 
-	void add() {
+	void add(String writer) {
 		System.out.print("게시물 제목을 입력해주세요 : ");
 		title = sc.nextLine();
 		System.out.print("게시물 내용을 입력해주세요 : ");
 		text = sc.nextLine();
 		savetitle.add(title);
 		savetext.add(text);
-		savewriter.add("익명");
+		savewriter.add(writer);
 		String year = Integer.toString(cal.get(YEAR));
 		String month = Integer.toString(cal.get(MONTH) + 1);
 		String date = Integer.toString(cal.get(DATE));
@@ -112,7 +112,7 @@ public class saveboard {
 		}
 	}
 
-	void view() {
+	void view(String a) {
 		int size = getSize();
 		if (size < 1) {
 			System.out.println("게시물이 하나도 없습니다. 게시물을 작성한 후 열람해 주세요.");
@@ -124,30 +124,30 @@ public class saveboard {
 				System.out.println("너무 큰 숫자입니다. ( 현재 " + size + "개의 게시물 존재 )");
 			} else {
 				viewprint(viewnum);
-				details(viewnum);
+				details(viewnum, a);
 			}
 		}
 	}
 	
-	void details(int a) {
+	void details(int a, String b) {
 		System.out.print("상세보기 기능을 선택해주세요(1. 댓글 등록, 2. 좋아요, 3. 수정, 4. 삭제, 5. 목록으로) : ");
 		dkey = Integer.parseInt(sc.nextLine());
 		switch(dkey){
 		case 1:
-			comment(a);
-			details(a);
+			comment(a, b);
+			details(a, b);
 			break;
 		case 2:
 			like();
-			details(a);
+			details(a, b);
 			break;
 		case 3:
 			update();
-			details(a);
+			details(a, b);
 			break;
 		case 4:
 			delete();
-			details(a);
+			details(a, b);
 			break;
 		case 5:
 			dkey = 0;
@@ -155,12 +155,12 @@ public class saveboard {
 		}
 	}
 	
-	void comment(int a) {
+	void comment(int a, String b) {
 		System.out.print("댓글 내용을 입력해주세요 : ");
 		cmt = sc.nextLine();
 		savecomment.get(a).setText(cmt);
 		savecomment.get(a).setDate();
-		savecomment.get(a).setWriter("익명");
+		savecomment.get(a).setWriter(b);
 		savecommentcount.set(a, savecommentcount.get(a) + 1);
 	}
 	
