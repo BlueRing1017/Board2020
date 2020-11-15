@@ -14,7 +14,7 @@ public class resister {
 	private String PW;
 	private String USER;
 	
-	void resister() {
+	void signup() {
 		System.out.print("사용할 아이디를 입력해주세요 : ");
 		id.add(sc.nextLine());
 		System.out.print("사용할 비밀번호를 입력해주세요 : ");
@@ -24,7 +24,7 @@ public class resister {
 		System.out.println("회원가입이 완료되었습니다.");
 	}
 
-	String login() {
+	String signin() {
 		boolean pass = false;
 		int code = 0;
 		System.out.print("아이디를 입력하세요 : ");

@@ -7,6 +7,7 @@ import static java.util.Calendar.YEAR;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
+import main.Main;
 
 public class saveboard {
 	Calendar cal = Calendar.getInstance();
@@ -111,7 +112,8 @@ public class saveboard {
 			}
 		}
 	}
-
+	
+	
 	void view(String a) {
 		int size = getSize();
 		if (size < 1) {
@@ -134,24 +136,27 @@ public class saveboard {
 		dkey = Integer.parseInt(sc.nextLine());
 		switch(dkey){
 		case 1:
-			comment(a, b);
-			details(a, b);
+			if (Main.logon) {
+				comment(a, b);
+			}else {
+				System.out.println("로그인 후 이용해주세요.");
+			}
 			break;
 		case 2:
 			like();
-			details(a, b);
 			break;
 		case 3:
 			update();
-			details(a, b);
 			break;
 		case 4:
 			delete();
-			details(a, b);
 			break;
 		case 5:
 			dkey = 0;
 			break;
+		}
+		if (dkey != 0) {
+			details(a, b);
 		}
 	}
 	
