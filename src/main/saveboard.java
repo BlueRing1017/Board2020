@@ -19,6 +19,7 @@ public class saveboard {
 	private ArrayList<Integer> saveview = new ArrayList<>();
 	private ArrayList<comments> savecomment = new ArrayList<>();
 	private ArrayList<Integer> savecommentcount = new ArrayList<>();
+	private ArrayList<likes> savelike = new ArrayList<>();
 	private Scanner sc = new Scanner(System.in);
 	private String title;
 	private String text;
@@ -34,6 +35,8 @@ public class saveboard {
 	private int skey;
 	private int dkey;
 	private String cmt;
+	private String lh;
+	private String ad;
 
 	void add(String writer) {
 		System.out.print("게시물 제목을 입력해주세요 : ");
@@ -49,6 +52,7 @@ public class saveboard {
 		savedate.add(year + "." + month + "." + date);
 		saveview.add(0);
 		savecomment.add(new comments());
+		savelike.add(new likes());
 		savecommentcount.add(0);
 		size++;
 		System.out.println("게시물이 등록되었습니다.");
@@ -69,6 +73,7 @@ public class saveboard {
 			savedate.add(year + "." + month + "." + date);
 			saveview.add(0);
 			savecomment.add(new comments());
+			savelike.add(new likes());
 			savecommentcount.add(0);
 			size++;
 		}
@@ -112,8 +117,66 @@ public class saveboard {
 			}
 		}
 	}
-	
-	
+
+	void sort() {
+		System.out.print("정렬 대상을 선택해주세요. (like : 좋아요, hit : 조회수) :");
+		lh = sc.nextLine();
+		System.out.print("정렬 방법을 선택해주세요. (asc : 오름차순, desc : 내림차순) :");
+		ad = sc.nextLine();
+		ArrayList<Integer> rank = new ArrayList<>();
+		int num = 0;
+		if (lh.equals("hit")) {
+			for (int i = 0; i < savetitle.size(); i++) {
+				if (i == 1) {
+					rank.add(i);
+				} else {
+					for (int j = 0; j < rank.size(); j++) {
+						if (saveview.get(j) <= saveview.get(i)) {
+							num++;
+						}
+					}
+					rank.add((rank.size() - num), saveview.get(i));
+				}
+			}
+		}else if (lh.equals("like")) {
+			for (int i = 0; i < savetitle.size(); i++) {
+				if (i == 1) {
+					rank.add(i);
+				} else {
+					for (int j = 0; j < rank.size(); j++) {
+						if (savelike.get(j).savelikes.size() <= savelike.get(i).savelikes.size()) {
+							num++;
+						}
+					}
+					rank.add((rank.size() - num), saveview.get(i));
+				}
+			}
+		}
+		if (ad.equals("desc")) {
+			line();
+			for (int i = 0; i < rank.size(); i++) {
+				int a = rank.get(i);
+				System.out.println((a + 1) + " 번 게시물");
+				System.out.println(rank.get(a));
+				System.out.println("작성자 : " + savewriter.get(a));
+				System.out.println("등록 날짜 : " + savedate.get(a));
+				System.out.println("조회수 : " + saveview.get(a));
+				line();
+			}
+		} else if (ad.equals("asc")) {
+			line();
+			for (int i = rank.size(); i < 0; i--) {
+				int a = rank.get(i);
+				System.out.println((a + 1) + " 번 게시물");
+				System.out.println(rank.get(a));
+				System.out.println("작성자 : " + savewriter.get(a));
+				System.out.println("등록 날짜 : " + savedate.get(a));
+				System.out.println("조회수 : " + saveview.get(a));
+				line();
+			}
+		}
+	}
+
 	void view(String a) {
 		int size = getSize();
 		if (size < 1) {
@@ -130,20 +193,24 @@ public class saveboard {
 			}
 		}
 	}
-	
+
 	void details(int a, String b) {
 		System.out.print("상세보기 기능을 선택해주세요(1. 댓글 등록, 2. 좋아요, 3. 수정, 4. 삭제, 5. 목록으로) : ");
 		dkey = Integer.parseInt(sc.nextLine());
-		switch(dkey){
+		switch (dkey) {
 		case 1:
 			if (Main.logon) {
 				comment(a, b);
-			}else {
+			} else {
 				System.out.println("로그인 후 이용해주세요.");
 			}
 			break;
 		case 2:
-			like();
+			if (Main.logon) {
+				like(a, b);
+			} else {
+				System.out.println("로그인 후 이용해주세요.");
+			}
 			break;
 		case 3:
 			update();
@@ -159,7 +226,7 @@ public class saveboard {
 			details(a, b);
 		}
 	}
-	
+
 	void comment(int a, String b) {
 		System.out.print("댓글 내용을 입력해주세요 : ");
 		cmt = sc.nextLine();
@@ -168,9 +235,9 @@ public class saveboard {
 		savecomment.get(a).setWriter(b);
 		savecommentcount.set(a, savecommentcount.get(a) + 1);
 	}
-	
-	void like() {
-		
+
+	void like(int num, String user) {
+		savelike.get(num).setLike(user);
 	}
 
 	void update() {
@@ -235,7 +302,7 @@ public class saveboard {
 					line();
 				}
 			}
-            break;
+			break;
 		case 2:
 			for (int i = 0; i < savetitle.size(); i++) {
 				if (savetext.get(i).contains(str)) {
@@ -248,7 +315,7 @@ public class saveboard {
 					line();
 				}
 			}
-            break;
+			break;
 		case 3:
 			for (int i = 0; i < savetitle.size(); i++) {
 				if (savetitle.get(i).contains(str) | savetext.get(i).contains(str)) {
@@ -261,7 +328,7 @@ public class saveboard {
 					line();
 				}
 			}
-            break;
+			break;
 		case 4:
 			for (int i = 0; i < savetitle.size(); i++) {
 				if (savewriter.get(i).contains(str)) {
@@ -274,7 +341,7 @@ public class saveboard {
 					line();
 				}
 			}
-            break;
+			break;
 		}
 	}
 
@@ -292,7 +359,7 @@ public class saveboard {
 
 }
 
-class comments{
+class comments {
 	Calendar cal = Calendar.getInstance();
 	private ArrayList<String> savecommentoftext = new ArrayList<>();
 	private ArrayList<String> savecommentofdate = new ArrayList<>();
@@ -301,28 +368,57 @@ class comments{
 	void setText(String text) {
 		savecommentoftext.add(text);
 	}
+
 	void setDate() {
 		String year = Integer.toString(cal.get(YEAR));
 		String month = Integer.toString(cal.get(MONTH) + 1);
 		String date = Integer.toString(cal.get(DATE));
 		savecommentofdate.add(year + "." + month + "." + date);
 	}
+
 	void setWriter(String text) {
 		savecommentofwriter.add(text);
 	}
+
 	String getText(int a) {
 		return savecommentoftext.get(a);
 	}
+
 	String getDate(int a) {
 		return savecommentofdate.get(a);
 	}
+
 	String getWriter(int a) {
 		return savecommentofwriter.get(a);
 	}
+
 	public ArrayList<String> getSavecommentoftext() {
 		return savecommentoftext;
 	}
+
 	public void setSavecommentoftext(ArrayList<String> savecommentoftext) {
 		this.savecommentoftext = savecommentoftext;
+	}
+}
+
+class likes {
+
+	ArrayList<String> savelikes = new ArrayList<>();
+	private boolean pass = true;
+
+	void setLike(String user) {
+		for (int i = 0; i < savelikes.size(); i++) {
+			if (savelikes.get(i).equals(user)) {
+				savelikes.remove(i);
+				System.out.println("이 게시물의 좋아요를 취소하였습니다.");
+				pass = false;
+				break;
+			}
+		}
+		if (pass) {
+			savelikes.add(user);
+			System.out.println("이 게시물을 좋아합니다.");
+		}
+		pass = true;
 	}
 }

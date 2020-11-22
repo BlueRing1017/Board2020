@@ -16,6 +16,7 @@ public class Main {
 		String user = null;
 
 		sv.testdata();
+		rs.testMember();
 		System.out.println("게시판 프로그램을 시작합니다.");
 		while (programon) {
 
@@ -38,6 +39,8 @@ public class Main {
 				sv.update();
 			} else if (cmd.equals("article delete")) {
 				sv.delete();
+			}else if (cmd.equals("article sort")) {
+				sv.sort();
 			} else if (cmd.equals("article search")) {
 				System.out.print("검색 항목을 선택해주세요 (1. 제목, 2. 내용, 3. 제목 + 내용, 4. 작성자) : ");
 				sv.setSkey(Integer.parseInt(sc.nextLine()));

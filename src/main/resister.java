@@ -13,15 +13,62 @@ public class resister {
 	private String ID;
 	private String PW;
 	private String USER;
+	private String str;
+	private boolean pass;
 	
 	void signup() {
-		System.out.print("사용할 아이디를 입력해주세요 : ");
-		id.add(sc.nextLine());
-		System.out.print("사용할 비밀번호를 입력해주세요 : ");
-		pw.add(sc.nextLine());
-		System.out.print("사용할 이름을 입력해주세요 : ");
-		user.add(sc.nextLine());
+		while (true) {
+			System.out.print("사용할 아이디를 입력해주세요 : ");
+			str = sc.nextLine();
+			for (int i = 0; i < user.size(); i++) {
+				if (id.get(i).equals(str)) {
+					pass = false;
+				}
+			}
+			if (pass) {			
+				id.add(str);
+				break;
+			}else {
+				System.out.println("중복되는 아이디입니다.");
+			}
+		}
+		while (true) {
+			System.out.print("사용할 아이디를 입력해주세요 : ");
+			str = sc.nextLine();
+			for (int i = 0; i < user.size(); i++) {
+				if (pw.get(i).equals(str)) {
+					pass = false;
+				}
+			}
+			if (pass) {			
+				pw.add(str);
+				break;
+			}else {
+				System.out.println("중복되는 비밀번호입니다.");
+			}
+		}
+		while (true) {
+			System.out.print("사용할 아이디를 입력해주세요 : ");
+			str = sc.nextLine();
+			for (int i = 0; i < user.size(); i++) {
+				if (user.get(i).equals(str)) {
+					pass = false;
+				}
+			}
+			if (pass) {			
+				user.add(str);
+				break;
+			}else {
+				System.out.println("중복되는 닉네임입니다.");
+			}
+		}
 		System.out.println("회원가입이 완료되었습니다.");
+	}
+	
+	void testMember() {
+		id.add("test");
+		pw.add("test");
+		user.add("test");
 	}
 
 	String signin() {
